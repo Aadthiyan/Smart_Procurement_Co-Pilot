@@ -1,0 +1,56 @@
+{
+    "workflow_name": "Purchase Request Workflow",
+    "description": "Process for handling purchase requisitions from intake to approval.",
+    "steps": [
+        {
+            "id": "req_1",
+            "agent": "Requisition Agent",
+            "action": "intake_request",
+            "next": "req_2"
+        },
+        {
+            "id": "req_2",
+            "agent": "Requisition Agent",
+            "action": "check_budget",
+            "next": {
+                "condition": "budget_available",
+                "true": "req_3",
+                "false": "req_budget_fail"
+            }
+        },
+        {
+            "id": "req_3",
+            "agent": "Compliance Agent",
+            "action": "validate_policy",
+            "next": {
+                "condition": "policy_passed",
+                "true": "req_4",
+                "false": "req_policy_fail"
+            }
+        },
+        {
+            "id": "req_4",
+            "agent": "Approval Agent",
+            "action": "route_for_approval",
+            "next": "req_5"
+        },
+        {
+            "id": "req_5",
+            "agent": "Communication Agent",
+            "action": "notify_approvers",
+            "next": "end"
+        },
+        {
+            "id": "req_budget_fail",
+            "agent": "Requisition Agent",
+            "action": "suggest_budget_adjustment",
+            "next": "end"
+        },
+        {
+            "id": "req_policy_fail",
+            "agent": "Communication Agent",
+            "action": "notify_policy_violation",
+            "next": "end"
+        }
+    ]
+}

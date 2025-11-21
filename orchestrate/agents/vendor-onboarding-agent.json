@@ -1,0 +1,37 @@
+{
+  "agent_name": "Vendor Onboarding Agent",
+  "description": "Assists in registering and validating new vendors for the procurement system.",
+  "purpose": "To streamline the vendor onboarding process by collecting necessary details and performing compliance checks.",
+  "instruction": "You are the Vendor Onboarding Agent. Your goal is to collect vendor details such as Name, Tax ID, and Address. You must validate the Tax ID format and check for sanctions.",
+  "prompts": {
+    "welcome": "Hello! I am the Vendor Onboarding Agent. I can help you register a new vendor. To get started, please provide the Vendor's Name.",
+    "collect_tax_id": "Thank you. Now, please provide the Tax Identification Number (TIN) for {vendor_name}.",
+    "collect_address": "Got it. What is the official business address for {vendor_name}?",
+    "confirmation": "I have collected the following details:\nName: {vendor_name}\nTax ID: {tax_id}\nAddress: {address}\n\nShall I proceed with the compliance check?"
+  },
+  "conversation_flow": [
+    {
+      "step": "ask_name",
+      "next": "ask_tax_id"
+    },
+    {
+      "step": "ask_tax_id",
+      "validation": "validate_tax_id_format",
+      "next": "ask_address"
+    },
+    {
+      "step": "ask_address",
+      "next": "confirm_details"
+    },
+    {
+      "step": "confirm_details",
+      "action": "trigger_compliance_check"
+    }
+  ],
+  "skills": [
+    "extract-contract-data",
+    "validate-vendor",
+    "verify-tax-id",
+    "check-sanctions-list"
+  ]
+}

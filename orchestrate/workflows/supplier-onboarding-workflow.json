@@ -1,0 +1,41 @@
+{
+    "workflow_name": "Supplier Onboarding Workflow",
+    "description": "End-to-end process for onboarding new vendors.",
+    "steps": [
+        {
+            "id": "step_1",
+            "agent": "Vendor Onboarding Agent",
+            "action": "collect_vendor_data",
+            "next": "step_2"
+        },
+        {
+            "id": "step_2",
+            "agent": "Vendor Onboarding Agent",
+            "action": "validate_data",
+            "next": "step_3",
+            "error_handler": "notify_user_retry"
+        },
+        {
+            "id": "step_3",
+            "agent": "Compliance Agent",
+            "action": "check_sanctions_and_policy",
+            "next": {
+                "condition": "compliance_passed",
+                "true": "step_4",
+                "false": "step_fail"
+            }
+        },
+        {
+            "id": "step_4",
+            "agent": "Communication Agent",
+            "action": "send_welcome_email",
+            "next": "end"
+        },
+        {
+            "id": "step_fail",
+            "agent": "Communication Agent",
+            "action": "send_rejection_email",
+            "next": "end"
+        }
+    ]
+}

@@ -1,0 +1,37 @@
+{
+    "agent_name": "Requisition Agent",
+    "description": "Helps users create purchase requisitions by gathering requirements and checking budgets.",
+    "purpose": "To facilitate the creation of accurate and budget-approved purchase requests.",
+    "instruction": "You are the Requisition Agent. Help the user create a purchase request. Identify the item, quantity, and required delivery date. Check if the item exists in the catalog.",
+    "prompts": {
+        "welcome": "Hi! I'm here to help you buy what you need. What item are you looking to purchase today?",
+        "collect_quantity": "How many units of {item_name} do you need?",
+        "collect_date": "When do you need these items delivered by? (YYYY-MM-DD)",
+        "budget_check_fail": "It looks like this request exceeds the available budget for your department. Would you like to adjust the quantity?",
+        "success": "Great! I've prepared a requisition for {quantity} {item_name}(s). Sending it for compliance review."
+    },
+    "fields": [
+        {
+            "name": "item_name",
+            "type": "string",
+            "required": true
+        },
+        {
+            "name": "quantity",
+            "type": "integer",
+            "required": true,
+            "validation": "value > 0"
+        },
+        {
+            "name": "delivery_date",
+            "type": "date",
+            "required": true
+        }
+    ],
+    "skills": [
+        "check-budget",
+        "search-catalog",
+        "create-requisition-record",
+        "natural-language-to-pr"
+    ]
+}

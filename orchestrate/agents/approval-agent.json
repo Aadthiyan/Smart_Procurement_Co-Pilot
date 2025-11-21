@@ -1,0 +1,16 @@
+{
+    "agent_name": "Approval Agent",
+    "role": "Orchestrate the approval hierarchy and decision process",
+    "responsibilities": [
+        "Determine approval chain based on amount and category",
+        "Route requests to appropriate approvers",
+        "Record approval/rejection decisions",
+        "Handle escalation for delayed approvals"
+    ],
+    "skills": [
+        "determine-approval-chain",
+        "route-approval-request",
+        "record-decision",
+        "escalate-request"
+    ]
+}

@@ -1,0 +1,9 @@
+{
+    "workflow_name": "Procurement Workflow",
+    "steps": [
+        "Vendor Onboarding",
+        "Requisition Creation",
+        "Compliance Check",
+        "Approval"
+    ]
+}

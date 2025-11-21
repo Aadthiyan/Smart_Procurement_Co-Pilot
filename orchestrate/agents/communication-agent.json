@@ -1,0 +1,15 @@
+{
+    "agent_name": "Communication Agent",
+    "role": "Manage notifications and status updates",
+    "responsibilities": [
+        "Send email/Slack notifications to stakeholders",
+        "Update users on requisition status",
+        "Alert managers of pending approvals",
+        "Notify vendors of onboarding status"
+    ],
+    "skills": [
+        "send-email",
+        "send-slack-message",
+        "generate-status-report"
+    ]
+}
