@@ -6,3 +6,5 @@ ibm-watson
 ibm-cloud-sdk-core
 ibmcloudant
 pandas
+pydantic>=2.0.0
+flask
