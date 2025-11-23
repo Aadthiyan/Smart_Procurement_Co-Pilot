@@ -22,6 +22,14 @@ Use this checklist to ensure your project is ready for submission.
 - [x] **Demo Data**: `src/backend/load_demo_data.py` available to seed the system.
 - [x] **Run Script**: `run_demo.bat` created for one-click launch.
 
+## 4. Deployment & Access
+- [x] **Deployment Guide**: `DEPLOYMENT.md` with multiple deployment options.
+- [x] **Demo Access**: `DEMO_ACCESS.md` with instructions for judges.
+- [x] **Cover Image**: `assets/cover_image.png` (16:9, high-resolution).
+- [x] **Dockerfile**: Ready for containerized deployment.
+- [ ] **Live Demo URL**: (Optional) Deploy to cloud and add URL to `DEMO_ACCESS.md`.
+- [x] **Local Demo**: Tested and working with `run_demo.bat`.
+
 ## 4. Submission Steps
 1.  **Video Recording**:
     *   Record the 3-minute demo using `submission/video_script.md`.
