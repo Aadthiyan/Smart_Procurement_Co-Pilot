@@ -4,3 +4,5 @@ pyyaml
 python-dotenv
 ibm-watson
 ibm-cloud-sdk-core
+ibmcloudant
+pandas

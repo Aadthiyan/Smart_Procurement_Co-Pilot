@@ -41,3 +41,7 @@ Thumbs.db
 # Logs
 *.log
 test-results.log
+
+# Local Data
+local_db.json
+logs/
