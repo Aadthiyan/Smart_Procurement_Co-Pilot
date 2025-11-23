@@ -56,7 +56,6 @@ def health_check():
     return jsonify({"status": "healthy", "timestamp": "2025-11-23"}), 200
 
 @app.route('/api/init-status', methods=['GET'])
-@require_permission(Permission.VIEW_AUDIT_LOG)
 def init_status():
     """Check initialization status of all components."""
     try:

@@ -35,3 +35,10 @@ class Logger:
         self.logger.error(f"Workflow {workflow_id} Failed: {error_msg}")
 
 workflow_logger = Logger()
+
+def get_logger(name=None):
+    """Get a logger instance for the given name"""
+    if name:
+        return logging.getLogger(name)
+    return workflow_logger.logger
+
