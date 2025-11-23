@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +24,7 @@
             background: white;
             margin: 20px auto;
             padding: 80px 120px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             page-break-after: always;
             position: relative;
         }
@@ -48,7 +49,8 @@
             margin-bottom: 20px;
         }
 
-        .slide p, .slide li {
+        .slide p,
+        .slide li {
             color: #525252;
             font-size: 32px;
             line-height: 1.6;
@@ -150,6 +152,7 @@
             body {
                 background: white;
             }
+
             .slide {
                 margin: 0;
                 box-shadow: none;
@@ -163,7 +166,8 @@
             font-size: 28px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 20px;
             text-align: left;
             border-bottom: 2px solid #E0E0E0;
@@ -180,401 +184,415 @@
         }
     </style>
 </head>
+
 <body>
 
-<!-- SLIDE 1: Title -->
-<div class="slide center">
-    <div style="margin-top: 200px;">
-        <h1 style="font-size: 96px; margin-bottom: 30px;">Smart Procurement Co-Pilot</h1>
-        <p class="subtitle">Autonomous Agentic AI for Enterprise Procurement</p>
-        <div style="margin-top: 100px;">
-            <p style="font-size: 38px; color: #0F62FE; font-weight: 600;">Built with IBM watsonx.orchestrate & watsonx.ai</p>
-            <p style="margin-top: 60px; font-size: 32px;">IBM watsonx Agentic AI Hackathon</p>
-            <p style="font-size: 32px;">November 2025</p>
-        </div>
-    </div>
-</div>
-
-<!-- SLIDE 2: The Problem -->
-<div class="slide">
-    <div class="logo">IBM watsonx</div>
-    <h2>The Problem: Procurement is Broken</h2>
-    <div class="grid-2" style="margin-top: 80px;">
-        <div class="feature-box">
-            <h3><span class="emoji">⏱️</span> Slow</h3>
-            <p>Vendor onboarding takes 2-3 weeks</p>
-        </div>
-        <div class="feature-box">
-            <h3><span class="emoji">❌</span> Error-Prone</h3>
-            <p>30% of requests violate policies</p>
-        </div>
-        <div class="feature-box">
-            <h3><span class="emoji">📊</span> No Visibility</h3>
-            <p>"Where's my order?" is the #1 question</p>
-        </div>
-        <div class="feature-box">
-            <h3><span class="emoji">💰</span> Budget Overruns</h3>
-            <p>No real-time budget checks</p>
-        </div>
-    </div>
-    <div class="footer">Slide 2</div>
-</div>
-
-<!-- SLIDE 3: The Solution -->
-<div class="slide">
-    <div class="logo">IBM watsonx</div>
-    <h2>The Solution: Intelligent Multi-Agent Co-Pilot</h2>
-    <ul style="margin-top: 80px; font-size: 38px;">
-        <li style="margin-bottom: 40px;"><strong>5 Specialized Agents</strong> working autonomously</li>
-        <li style="margin-bottom: 40px;"><strong>Automated Workflows</strong> from request to delivery</li>
-        <li style="margin-bottom: 40px;"><strong>Natural Language Interface</strong> - just chat</li>
-        <li style="margin-bottom: 40px;"><strong>IBM watsonx Powered</strong> - enterprise-grade AI</li>
-    </ul>
-    <div class="highlight" style="margin-top: 60px;">
-        <p style="font-size: 42px; text-align: center; color: white;">
-            <strong>True Agentic AI:</strong> Agents reason and decide autonomously using watsonx.ai
-        </p>
-    </div>
-    <div class="footer">Slide 3</div>
-</div>
-
-<!-- SLIDE 4: Architecture -->
-<div class="slide">
-    <div class="logo">IBM watsonx</div>
-    <h2>Architecture: Powered by IBM watsonx Platform</h2>
-    <div style="background: #F4F4F4; padding: 60px; border-radius: 12px; margin-top: 60px; font-family: monospace; font-size: 28px; line-height: 2;">
-        <div style="text-align: center;">
-            <div style="background: #0F62FE; color: white; padding: 20px; border-radius: 8px; margin-bottom: 30px;">User Interface (Streamlit)</div>
-            <div style="font-size: 48px; color: #0F62FE;">↓</div>
-            <div style="background: #8A3FFC; color: white; padding: 20px; border-radius: 8px; margin: 30px 0;">watsonx.orchestrate (Workflows)</div>
-            <div style="font-size: 48px; color: #0F62FE;">↓</div>
-            <div style="background: #08BDBA; color: white; padding: 20px; border-radius: 8px; margin: 30px 0;">
-                5 Autonomous Agents + watsonx.ai<br>
-                <span style="font-size: 24px;">Vendor • Requisition • Compliance • Approval • Communication</span>
-            </div>
-            <div style="font-size: 48px; color: #0F62FE;">↓</div>
-            <div style="background: #161616; color: white; padding: 20px; border-radius: 8px; margin-top: 30px;">IBM Cloudant + Secrets Manager</div>
-        </div>
-    </div>
-    <div class="footer">Slide 4</div>
-</div>
-
-<!-- SLIDE 5: Technology Stack -->
-<div class="slide">
-    <div class="logo">IBM watsonx</div>
-    <h2>Technology Stack: Built for Enterprise Scale</h2>
-    <div class="grid-2" style="margin-top: 80px;">
-        <div>
-            <h3 style="color: #0F62FE;">AI & Orchestration</h3>
-            <ul style="font-size: 32px;">
-                <li>IBM watsonx.ai (Granite 13B Chat)</li>
-                <li>IBM watsonx.orchestrate</li>
-                <li>IBM Natural Language Understanding</li>
-            </ul>
-        </div>
-        <div>
-            <h3 style="color: #8A3FFC;">Data & Security</h3>
-            <ul style="font-size: 32px;">
-                <li>IBM Cloudant (NoSQL Database)</li>
-                <li>IBM Secrets Manager</li>
-                <li>RBAC + Audit Logging</li>
-            </ul>
-        </div>
-        <div>
-            <h3 style="color: #08BDBA;">Application Layer</h3>
-            <ul style="font-size: 32px;">
-                <li>Python + Streamlit Frontend</li>
-                <li>Pydantic (Formal Contracts)</li>
-                <li>Flask REST API</li>
-            </ul>
-        </div>
-        <div>
-            <h3 style="color: #0F62FE;">Deployment</h3>
-            <ul style="font-size: 32px;">
-                <li>IBM Cloud Code Engine</li>
-                <li>Docker Containers</li>
-                <li>CI/CD with GitHub Actions</li>
-            </ul>
-        </div>
-    </div>
-    <div class="highlight" style="margin-top: 40px;">
-        <p style="font-size: 38px; text-align: center; color: white;"><strong>100% IBM Cloud Native</strong></p>
-    </div>
-    <div class="footer">Slide 5</div>
-</div>
-
-<!-- SLIDE 6: Key Features -->
-<div class="slide">
-    <div class="logo">IBM watsonx</div>
-    <h2>Key Features: Delivering Real Business Value</h2>
-    <div class="grid-4" style="margin-top: 60px;">
-        <div class="feature-box">
-            <h3 style="font-size: 32px;">🤖 Smart Vendor Onboarding</h3>
-            <p style="font-size: 28px;">• 80% faster registration<br>• Auto-validation with watsonx.ai<br>• Compliance checks built-in</p>
-        </div>
-        <div class="feature-box">
-            <h3 style="font-size: 32px;">📦 Intelligent Requisitions</h3>
-            <p style="font-size: 28px;">• Real-time budget checks<br>• Catalog search & recommendations<br>• Auto-routing for approvals</p>
-        </div>
-        <div class="feature-box">
-            <h3 style="font-size: 32px;">✅ Policy Guardrails</h3>
-            <p style="font-size: 28px;">• 100% compliance enforcement<br>• Autonomous violation detection<br>• Risk scoring with LLM reasoning</p>
-        </div>
-        <div class="feature-box">
-            <h3 style="font-size: 32px;">📊 Full Observability</h3>
-            <p style="font-size: 28px;">• Complete audit trail<br>• RBAC (7 roles, 17 permissions)<br>• Session management</p>
-        </div>
-    </div>
-    <div class="footer">Slide 6</div>
-</div>
-
-<!-- SLIDE 7: Demo -->
-<div class="slide">
-    <div class="logo">IBM watsonx</div>
-    <h2>Demo: See It In Action</h2>
-    <div style="background: #161616; color: #00FF00; padding: 40px; border-radius: 12px; margin-top: 60px; font-family: monospace; font-size: 28px;">
-        <p style="color: #08BDBA;">User:</p>
-        <p style="margin-left: 40px;">"Add vendor: Quantum Systems Inc, Tax ID: 99-8877665"</p>
-        <br>
-        <p style="color: #8A3FFC;">Vendor Agent:</p>
-        <p style="margin-left: 40px;">✓ Validating Tax ID format... PASSED</p>
-        <p style="margin-left: 40px;">✓ Checking industry compliance... PASSED</p>
-        <p style="margin-left: 40px;">✓ watsonx.ai risk assessment... Score: 0.92 (HIGH CONFIDENCE)</p>
-        <p style="margin-left: 40px;">✓ Autonomous decision: APPROVED</p>
-        <br>
-        <p style="color: #00FF00;">✅ Vendor 'Quantum Systems Inc' successfully onboarded!</p>
-    </div>
-    <div class="highlight" style="margin-top: 40px;">
-        <p style="font-size: 36px; text-align: center; color: white;">
-            <strong>Live Demo:</strong> github.com/Aadthiyan/Smart_Procurement_Co-Pilot
-        </p>
-    </div>
-    <div class="footer">Slide 7</div>
-</div>
-
-<!-- SLIDE 8: Business Value -->
-<div class="slide">
-    <div class="logo">IBM watsonx</div>
-    <h2>Business Value: Measurable Impact</h2>
-    <div class="grid-2" style="margin-top: 80px;">
-        <div class="metric">
-            <h3>80%</h3>
-            <p>Faster Onboarding<br>(weeks → hours)</p>
-        </div>
-        <div class="metric">
-            <h3>$500K</h3>
-            <p>Annual Savings<br>from automation</p>
-        </div>
-        <div class="metric">
-            <h3>100%</h3>
-            <p>Compliance Rate<br>zero violations</p>
-        </div>
-        <div class="metric">
-            <h3>5x</h3>
-            <p>Productivity Gain<br>for procurement teams</p>
-        </div>
-    </div>
-    <div class="highlight" style="margin-top: 60px;">
-        <p style="font-size: 36px; text-align: center; color: white;">
-            <strong>ROI:</strong> $50K implementation → $500K/year savings → <strong>1.2 month payback</strong>
-        </p>
-    </div>
-    <div class="footer">Slide 8</div>
-</div>
-
-<!-- SLIDE 9: Technical Innovation -->
-<div class="slide">
-    <div class="logo">IBM watsonx</div>
-    <h2>Technical Innovation: What Makes This Agentic AI?</h2>
-    <table style="margin-top: 60px;">
-        <tr>
-            <th>Aspect</th>
-            <th>Traditional Chatbot</th>
-            <th style="background: #8A3FFC;">Our Agentic AI</th>
-        </tr>
-        <tr>
-            <td><strong>Decision Logic</strong></td>
-            <td>Scripted responses</td>
-            <td><strong>LLM reasoning (watsonx.ai)</strong></td>
-        </tr>
-        <tr>
-            <td><strong>Autonomy</strong></td>
-            <td>Waits for prompts</td>
-            <td><strong>Autonomous actions</strong></td>
-        </tr>
-        <tr>
-            <td><strong>Reasoning</strong></td>
-            <td>Rule-based</td>
-            <td><strong>Context-aware decisions</strong></td>
-        </tr>
-        <tr>
-            <td><strong>Adaptability</strong></td>
-            <td>Fixed responses</td>
-            <td><strong>Confidence scoring</strong></td>
-        </tr>
-    </table>
-    <div class="highlight" style="margin-top: 40px;">
-        <p style="font-size: 32px; color: white;">
-            <strong>Key Innovation:</strong> Formal Skill Contracts + 3-Level Fallback + Multi-Agent Collaboration
-        </p>
-    </div>
-    <div class="footer">Slide 9</div>
-</div>
-
-<!-- SLIDE 10: Market Opportunity -->
-<div class="slide">
-    <div class="logo">IBM watsonx</div>
-    <h2>Market Opportunity: Massive Addressable Market</h2>
-    <div class="grid-2" style="margin-top: 80px;">
-        <div>
-            <h3 style="color: #0F62FE;">Market Size</h3>
-            <div class="metric" style="margin-top: 30px;">
-                <h3>$9.5B</h3>
-                <p>Global Procurement Software (2024)</p>
-            </div>
-            <div class="metric" style="margin-top: 30px; background: linear-gradient(135deg, #8A3FFC 0%, #0F62FE 100%);">
-                <h3>12%</h3>
-                <p>Annual Growth Rate (CAGR)</p>
+    <!-- SLIDE 1: Title -->
+    <div class="slide center">
+        <div style="margin-top: 200px;">
+            <h1 style="font-size: 96px; margin-bottom: 30px;">Smart Procurement Co-Pilot</h1>
+            <p class="subtitle">Autonomous Agentic AI for Enterprise Procurement</p>
+            <div style="margin-top: 100px;">
+                <p style="font-size: 38px; color: #0F62FE; font-weight: 600;">Built with IBM watsonx.orchestrate &
+                    watsonx.ai</p>
+                <p style="margin-top: 60px; font-size: 32px;">IBM watsonx Agentic AI Hackathon</p>
+                <p style="font-size: 32px;">November 2025</p>
             </div>
         </div>
-        <div>
-            <h3 style="color: #8A3FFC;">Competitive Advantage</h3>
-            <ul style="font-size: 32px; margin-top: 30px;">
-                <li>Only solution with true agentic AI</li>
-                <li>IBM watsonx enterprise security</li>
-                <li>No-code workflow customization</li>
-                <li>10x faster than competitors</li>
-            </ul>
-            <div class="highlight" style="margin-top: 40px;">
-                <p style="font-size: 32px; color: white; text-align: center;">
-                    <strong>Target:</strong> Mid-market enterprises<br>(1,000-10,000 employees)
+    </div>
+
+    <!-- SLIDE 2: The Problem -->
+    <div class="slide">
+        <div class="logo">IBM watsonx</div>
+        <h2>The Problem: Procurement is Broken</h2>
+        <div class="grid-2" style="margin-top: 80px;">
+            <div class="feature-box">
+                <h3><span class="emoji">⏱️</span> Slow</h3>
+                <p>Vendor onboarding takes 2-3 weeks</p>
+            </div>
+            <div class="feature-box">
+                <h3><span class="emoji">❌</span> Error-Prone</h3>
+                <p>30% of requests violate policies</p>
+            </div>
+            <div class="feature-box">
+                <h3><span class="emoji">📊</span> No Visibility</h3>
+                <p>"Where's my order?" is the #1 question</p>
+            </div>
+            <div class="feature-box">
+                <h3><span class="emoji">💰</span> Budget Overruns</h3>
+                <p>No real-time budget checks</p>
+            </div>
+        </div>
+        <div class="footer">Slide 2</div>
+    </div>
+
+    <!-- SLIDE 3: The Solution -->
+    <div class="slide">
+        <div class="logo">IBM watsonx</div>
+        <h2>The Solution: Intelligent Multi-Agent Co-Pilot</h2>
+        <ul style="margin-top: 80px; font-size: 38px;">
+            <li style="margin-bottom: 40px;"><strong>5 Specialized Agents</strong> working autonomously</li>
+            <li style="margin-bottom: 40px;"><strong>Automated Workflows</strong> from request to delivery</li>
+            <li style="margin-bottom: 40px;"><strong>Natural Language Interface</strong> - just chat</li>
+            <li style="margin-bottom: 40px;"><strong>IBM watsonx Powered</strong> - enterprise-grade AI</li>
+        </ul>
+        <div class="highlight" style="margin-top: 60px;">
+            <p style="font-size: 42px; text-align: center; color: white;">
+                <strong>True Agentic AI:</strong> Agents reason and decide autonomously using watsonx.ai
+            </p>
+        </div>
+        <div class="footer">Slide 3</div>
+    </div>
+
+    <!-- SLIDE 4: Architecture -->
+    <div class="slide">
+        <div class="logo">IBM watsonx</div>
+        <h2>Architecture: Powered by IBM watsonx Platform</h2>
+        <div
+            style="background: #F4F4F4; padding: 60px; border-radius: 12px; margin-top: 60px; font-family: monospace; font-size: 28px; line-height: 2;">
+            <div style="text-align: center;">
+                <div style="background: #0F62FE; color: white; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+                    User Interface (Streamlit)</div>
+                <div style="font-size: 48px; color: #0F62FE;">↓</div>
+                <div style="background: #8A3FFC; color: white; padding: 20px; border-radius: 8px; margin: 30px 0;">
+                    watsonx.orchestrate (Workflows)</div>
+                <div style="font-size: 48px; color: #0F62FE;">↓</div>
+                <div style="background: #08BDBA; color: white; padding: 20px; border-radius: 8px; margin: 30px 0;">
+                    5 Autonomous Agents + watsonx.ai<br>
+                    <span style="font-size: 24px;">Vendor • Requisition • Compliance • Approval • Communication</span>
+                </div>
+                <div style="font-size: 48px; color: #0F62FE;">↓</div>
+                <div style="background: #161616; color: white; padding: 20px; border-radius: 8px; margin-top: 30px;">IBM
+                    Cloudant + Secrets Manager</div>
+            </div>
+        </div>
+        <div class="footer">Slide 4</div>
+    </div>
+
+    <!-- SLIDE 5: Technology Stack -->
+    <div class="slide">
+        <div class="logo">IBM watsonx</div>
+        <h2>Technology Stack: Built for Enterprise Scale</h2>
+        <div class="grid-2" style="margin-top: 80px;">
+            <div>
+                <h3 style="color: #0F62FE;">AI & Orchestration</h3>
+                <ul style="font-size: 32px;">
+                    <li>IBM watsonx.ai (Granite 13B Chat)</li>
+                    <li>IBM watsonx.orchestrate</li>
+                    <li>IBM Natural Language Understanding</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #8A3FFC;">Data & Security</h3>
+                <ul style="font-size: 32px;">
+                    <li>IBM Cloudant (NoSQL Database)</li>
+                    <li>IBM Secrets Manager</li>
+                    <li>RBAC + Audit Logging</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #08BDBA;">Application Layer</h3>
+                <ul style="font-size: 32px;">
+                    <li>Python + Streamlit Frontend</li>
+                    <li>Pydantic (Formal Contracts)</li>
+                    <li>Flask REST API</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #0F62FE;">Deployment</h3>
+                <ul style="font-size: 32px;">
+                    <li>IBM Cloud Code Engine</li>
+                    <li>Docker Containers</li>
+                    <li>CI/CD with GitHub Actions</li>
+                </ul>
+            </div>
+        </div>
+        <div class="highlight" style="margin-top: 40px;">
+            <p style="font-size: 38px; text-align: center; color: white;"><strong>100% IBM Cloud Native</strong></p>
+        </div>
+        <div class="footer">Slide 5</div>
+    </div>
+
+    <!-- SLIDE 6: Key Features -->
+    <div class="slide">
+        <div class="logo">IBM watsonx</div>
+        <h2>Key Features: Delivering Real Business Value</h2>
+        <div class="grid-4" style="margin-top: 60px;">
+            <div class="feature-box">
+                <h3 style="font-size: 32px;">🤖 Smart Vendor Onboarding</h3>
+                <p style="font-size: 28px;">• 80% faster registration<br>• Auto-validation with watsonx.ai<br>•
+                    Compliance checks built-in</p>
+            </div>
+            <div class="feature-box">
+                <h3 style="font-size: 32px;">📦 Intelligent Requisitions</h3>
+                <p style="font-size: 28px;">• Real-time budget checks<br>• Catalog search & recommendations<br>•
+                    Auto-routing for approvals</p>
+            </div>
+            <div class="feature-box">
+                <h3 style="font-size: 32px;">✅ Policy Guardrails</h3>
+                <p style="font-size: 28px;">• 100% compliance enforcement<br>• Autonomous violation detection<br>• Risk
+                    scoring with LLM reasoning</p>
+            </div>
+            <div class="feature-box">
+                <h3 style="font-size: 32px;">📊 Full Observability</h3>
+                <p style="font-size: 28px;">• Complete audit trail<br>• RBAC (7 roles, 17 permissions)<br>• Session
+                    management</p>
+            </div>
+        </div>
+        <div class="footer">Slide 6</div>
+    </div>
+
+    <!-- SLIDE 7: Demo -->
+    <div class="slide">
+        <div class="logo">IBM watsonx</div>
+        <h2>Demo: See It In Action</h2>
+        <div
+            style="background: #161616; color: #00FF00; padding: 40px; border-radius: 12px; margin-top: 60px; font-family: monospace; font-size: 28px;">
+            <p style="color: #08BDBA;">User:</p>
+            <p style="margin-left: 40px;">"Add vendor: Quantum Systems Inc, Tax ID: 99-8877665"</p>
+            <br>
+            <p style="color: #8A3FFC;">Vendor Agent:</p>
+            <p style="margin-left: 40px;">✓ Validating Tax ID format... PASSED</p>
+            <p style="margin-left: 40px;">✓ Checking industry compliance... PASSED</p>
+            <p style="margin-left: 40px;">✓ watsonx.ai risk assessment... Score: 0.92 (HIGH CONFIDENCE)</p>
+            <p style="margin-left: 40px;">✓ Autonomous decision: APPROVED</p>
+            <br>
+            <p style="color: #00FF00;">✅ Vendor 'Quantum Systems Inc' successfully onboarded!</p>
+        </div>
+        <div class="highlight" style="margin-top: 40px;">
+            <p style="font-size: 36px; text-align: center; color: white;">
+                <strong>Live Demo:</strong> github.com/Aadthiyan/Smart_Procurement_Co-Pilot
+            </p>
+        </div>
+        <div class="footer">Slide 7</div>
+    </div>
+
+    <!-- SLIDE 8: Business Value -->
+    <div class="slide">
+        <div class="logo">IBM watsonx</div>
+        <h2>Business Value: Measurable Impact</h2>
+        <div class="grid-2" style="margin-top: 80px;">
+            <div class="metric">
+                <h3>80%</h3>
+                <p>Faster Onboarding<br>(weeks → hours)</p>
+            </div>
+            <div class="metric">
+                <h3>$500K</h3>
+                <p>Annual Savings<br>from automation</p>
+            </div>
+            <div class="metric">
+                <h3>100%</h3>
+                <p>Compliance Rate<br>zero violations</p>
+            </div>
+            <div class="metric">
+                <h3>5x</h3>
+                <p>Productivity Gain<br>for procurement teams</p>
+            </div>
+        </div>
+        <div class="highlight" style="margin-top: 60px;">
+            <p style="font-size: 36px; text-align: center; color: white;">
+                <strong>ROI:</strong> $50K implementation → $500K/year savings → <strong>1.2 month payback</strong>
+            </p>
+        </div>
+        <div class="footer">Slide 8</div>
+    </div>
+
+    <!-- SLIDE 9: Technical Innovation -->
+    <div class="slide">
+        <div class="logo">IBM watsonx</div>
+        <h2>Technical Innovation: What Makes This Agentic AI?</h2>
+        <table style="margin-top: 60px;">
+            <tr>
+                <th>Aspect</th>
+                <th>Traditional Chatbot</th>
+                <th style="background: #8A3FFC;">Our Agentic AI</th>
+            </tr>
+            <tr>
+                <td><strong>Decision Logic</strong></td>
+                <td>Scripted responses</td>
+                <td><strong>LLM reasoning (watsonx.ai)</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Autonomy</strong></td>
+                <td>Waits for prompts</td>
+                <td><strong>Autonomous actions</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Reasoning</strong></td>
+                <td>Rule-based</td>
+                <td><strong>Context-aware decisions</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Adaptability</strong></td>
+                <td>Fixed responses</td>
+                <td><strong>Confidence scoring</strong></td>
+            </tr>
+        </table>
+        <div class="highlight" style="margin-top: 40px;">
+            <p style="font-size: 32px; color: white;">
+                <strong>Key Innovation:</strong> Formal Skill Contracts + 3-Level Fallback + Multi-Agent Collaboration
+            </p>
+        </div>
+        <div class="footer">Slide 9</div>
+    </div>
+
+    <!-- SLIDE 10: Market Opportunity -->
+    <div class="slide">
+        <div class="logo">IBM watsonx</div>
+        <h2>Market Opportunity: Massive Addressable Market</h2>
+        <div class="grid-2" style="margin-top: 80px;">
+            <div>
+                <h3 style="color: #0F62FE;">Market Size</h3>
+                <div class="metric" style="margin-top: 30px;">
+                    <h3>$9.5B</h3>
+                    <p>Global Procurement Software (2024)</p>
+                </div>
+                <div class="metric"
+                    style="margin-top: 30px; background: linear-gradient(135deg, #8A3FFC 0%, #0F62FE 100%);">
+                    <h3>12%</h3>
+                    <p>Annual Growth Rate (CAGR)</p>
+                </div>
+            </div>
+            <div>
+                <h3 style="color: #8A3FFC;">Competitive Advantage</h3>
+                <ul style="font-size: 32px; margin-top: 30px;">
+                    <li>Only solution with true agentic AI</li>
+                    <li>IBM watsonx enterprise security</li>
+                    <li>No-code workflow customization</li>
+                    <li>10x faster than competitors</li>
+                </ul>
+                <div class="highlight" style="margin-top: 40px;">
+                    <p style="font-size: 32px; color: white; text-align: center;">
+                        <strong>Target:</strong> Mid-market enterprises<br>(1,000-10,000 employees)
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="footer">Slide 10</div>
+    </div>
+
+    <!-- SLIDE 11: Competitive Analysis -->
+    <div class="slide">
+        <div class="logo">IBM watsonx</div>
+        <h2>Competitive Analysis: Why We Win</h2>
+        <table style="margin-top: 60px; font-size: 26px;">
+            <tr>
+                <th>Feature</th>
+                <th>Manual Process</th>
+                <th>Coupa</th>
+                <th>SAP Ariba</th>
+                <th style="background: #8A3FFC;">Our Solution</th>
+            </tr>
+            <tr>
+                <td><strong>Automation</strong></td>
+                <td>❌</td>
+                <td>⚠️ Partial</td>
+                <td>⚠️ Partial</td>
+                <td><strong>✅ Full</strong></td>
+            </tr>
+            <tr>
+                <td><strong>AI-Powered</strong></td>
+                <td>❌</td>
+                <td>❌</td>
+                <td>⚠️ Basic</td>
+                <td><strong>✅ Agentic</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Real-time Budget</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+                <td>✅</td>
+                <td><strong>✅</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Compliance</strong></td>
+                <td>❌ Manual</td>
+                <td>⚠️ Rules</td>
+                <td>⚠️ Rules</td>
+                <td><strong>✅ LLM Reasoning</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Setup Time</strong></td>
+                <td>N/A</td>
+                <td>6 months</td>
+                <td>12 months</td>
+                <td><strong>2 weeks</strong></td>
+            </tr>
+        </table>
+        <div class="footer">Slide 11</div>
+    </div>
+
+    <!-- SLIDE 12: Future Roadmap -->
+    <div class="slide">
+        <div class="logo">IBM watsonx</div>
+        <h2>Future Roadmap: What's Next?</h2>
+        <div class="grid-2" style="margin-top: 80px;">
+            <div class="feature-box">
+                <h3 style="font-size: 32px;">Q1 2026</h3>
+                <p style="font-size: 28px;">
+                    🎤 Voice interface (Alexa/Google)<br>
+                    📱 Mobile app (iOS/Android)
+                </p>
+            </div>
+            <div class="feature-box">
+                <h3 style="font-size: 32px;">Q2 2026</h3>
+                <p style="font-size: 28px;">
+                    🔮 Predictive analytics<br>
+                    🌐 Multi-language support (10 languages)
+                </p>
+            </div>
+            <div class="feature-box">
+                <h3 style="font-size: 32px;">Q3 2026</h3>
+                <p style="font-size: 28px;">
+                    🔗 Blockchain integration<br>
+                    🤝 Full ERP integration (SAP/Oracle)
+                </p>
+            </div>
+            <div class="feature-box">
+                <h3 style="font-size: 32px;">Q4 2026</h3>
+                <p style="font-size: 28px;">
+                    🌍 Global expansion<br>
+                    🏢 Enterprise partnerships
                 </p>
             </div>
         </div>
-    </div>
-    <div class="footer">Slide 10</div>
-</div>
-
-<!-- SLIDE 11: Competitive Analysis -->
-<div class="slide">
-    <div class="logo">IBM watsonx</div>
-    <h2>Competitive Analysis: Why We Win</h2>
-    <table style="margin-top: 60px; font-size: 26px;">
-        <tr>
-            <th>Feature</th>
-            <th>Manual Process</th>
-            <th>Coupa</th>
-            <th>SAP Ariba</th>
-            <th style="background: #8A3FFC;">Our Solution</th>
-        </tr>
-        <tr>
-            <td><strong>Automation</strong></td>
-            <td>❌</td>
-            <td>⚠️ Partial</td>
-            <td>⚠️ Partial</td>
-            <td><strong>✅ Full</strong></td>
-        </tr>
-        <tr>
-            <td><strong>AI-Powered</strong></td>
-            <td>❌</td>
-            <td>❌</td>
-            <td>⚠️ Basic</td>
-            <td><strong>✅ Agentic</strong></td>
-        </tr>
-        <tr>
-            <td><strong>Real-time Budget</strong></td>
-            <td>❌</td>
-            <td>✅</td>
-            <td>✅</td>
-            <td><strong>✅</strong></td>
-        </tr>
-        <tr>
-            <td><strong>Compliance</strong></td>
-            <td>❌ Manual</td>
-            <td>⚠️ Rules</td>
-            <td>⚠️ Rules</td>
-            <td><strong>✅ LLM Reasoning</strong></td>
-        </tr>
-        <tr>
-            <td><strong>Setup Time</strong></td>
-            <td>N/A</td>
-            <td>6 months</td>
-            <td>12 months</td>
-            <td><strong>2 weeks</strong></td>
-        </tr>
-    </table>
-    <div class="footer">Slide 11</div>
-</div>
-
-<!-- SLIDE 12: Future Roadmap -->
-<div class="slide">
-    <div class="logo">IBM watsonx</div>
-    <h2>Future Roadmap: What's Next?</h2>
-    <div class="grid-2" style="margin-top: 80px;">
-        <div class="feature-box">
-            <h3 style="font-size: 32px;">Q1 2026</h3>
-            <p style="font-size: 28px;">
-                🎤 Voice interface (Alexa/Google)<br>
-                📱 Mobile app (iOS/Android)
+        <div class="highlight" style="margin-top: 60px;">
+            <p style="font-size: 48px; text-align: center; color: white;">
+                <strong>Vision:</strong> The AI co-pilot for every procurement professional
             </p>
         </div>
-        <div class="feature-box">
-            <h3 style="font-size: 32px;">Q2 2026</h3>
-            <p style="font-size: 28px;">
-                🔮 Predictive analytics<br>
-                🌐 Multi-language support (10 languages)
-            </p>
-        </div>
-        <div class="feature-box">
-            <h3 style="font-size: 32px;">Q3 2026</h3>
-            <p style="font-size: 28px;">
-                🔗 Blockchain integration<br>
-                🤝 Full ERP integration (SAP/Oracle)
-            </p>
-        </div>
-        <div class="feature-box">
-            <h3 style="font-size: 32px;">Q4 2026</h3>
-            <p style="font-size: 28px;">
-                🌍 Global expansion<br>
-                🏢 Enterprise partnerships
-            </p>
-        </div>
+        <div class="footer">Slide 12</div>
     </div>
-    <div class="highlight" style="margin-top: 60px;">
-        <p style="font-size: 48px; text-align: center; color: white;">
-            <strong>Vision:</strong> The AI co-pilot for every procurement professional
-        </p>
-    </div>
-    <div class="footer">Slide 12</div>
-</div>
 
-<!-- SLIDE 13: Thank You -->
-<div class="slide center">
-    <div style="margin-top: 150px;">
-        <h1 style="font-size: 84px; margin-bottom: 60px;">Thank You!</h1>
-        <p class="subtitle" style="font-size: 48px;">Let's Transform Procurement Together</p>
-        <div style="margin-top: 100px; text-align: left; display: inline-block;">
-            <p style="font-size: 36px; margin-bottom: 30px;">📧 <strong>Email:</strong> [your-email@example.com]</p>
-            <p style="font-size: 36px; margin-bottom: 30px;">🔗 <strong>GitHub:</strong> github.com/Aadthiyan/Smart_Procurement_Co-Pilot</p>
-            <p style="font-size: 36px; margin-bottom: 30px;">🎥 <strong>Demo Video:</strong> [YouTube link]</p>
-            <p style="font-size: 36px; margin-bottom: 30px;">📄 <strong>Documentation:</strong> Full README available</p>
+    <!-- SLIDE 13: Thank You -->
+    <div class="slide center">
+        <div style="margin-top: 150px;">
+            <h1 style="font-size: 84px; margin-bottom: 60px;">Thank You!</h1>
+            <p class="subtitle" style="font-size: 48px;">Let's Transform Procurement Together</p>
+            <div style="margin-top: 100px; text-align: left; display: inline-block;">
+                <p style="font-size: 36px; margin-bottom: 30px;">📧 <strong>Email:</strong> aadhiks9595@gmail.com</p>
+                <p style="font-size: 36px; margin-bottom: 30px;">🔗 <strong>GitHub:</strong>
+                    github.com/Aadthiyan/Smart_Procurement_Co-Pilot</p>
+                <p style="font-size: 36px; margin-bottom: 30px;">📄 <strong>Documentation:</strong> Full README
+                    available</p>
+            </div>
+            <div class="highlight" style="margin-top: 80px; display: inline-block; padding: 30px 80px;">
+                <p style="font-size: 42px; color: white;"><strong>Try the demo now!</strong></p>
+            </div>
+            <p style="margin-top: 60px; font-size: 32px; color: #8D8D8D;">Built with ❤️ using IBM watsonx</p>
         </div>
-        <div class="highlight" style="margin-top: 80px; display: inline-block; padding: 30px 80px;">
-            <p style="font-size: 42px; color: white;"><strong>Try the demo now!</strong></p>
-        </div>
-        <p style="margin-top: 60px; font-size: 32px; color: #8D8D8D;">Built with ❤️ using IBM watsonx</p>
     </div>
-</div>
 
-<script>
-    // Print to PDF instructions
-    console.log("To export as PDF:");
-    console.log("1. Press Ctrl+P (or Cmd+P on Mac)");
-    console.log("2. Select 'Save as PDF' as destination");
-    console.log("3. Set margins to 'None'");
-    console.log("4. Enable 'Background graphics'");
-    console.log("5. Save the file");
-</script>
+    <script>
+        // Print to PDF instructions
+        console.log("To export as PDF:");
+        console.log("1. Press Ctrl+P (or Cmd+P on Mac)");
+        console.log("2. Select 'Save as PDF' as destination");
+        console.log("3. Set margins to 'None'");
+        console.log("4. Enable 'Background graphics'");
+        console.log("5. Save the file");
+    </script>
 
 </body>
+
 </html>
