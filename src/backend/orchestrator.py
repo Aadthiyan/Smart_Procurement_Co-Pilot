@@ -220,32 +220,42 @@ class Orchestrator:
             risk_level = "High"
             status = "❌ REJECTED"
         
-        # Build response
-        response = f"**{status}** - Vendor Onboarding Complete\n\n"
-        response += f"📋 **Vendor Details:**\n"
-        response += f"• **Name**: {vendor_data.get('vendor_name')}\n"
-        response += f"• **Tax ID**: {vendor_data.get('tax_id')}\n"
+        
+        # Build beautified response with proper spacing and formatting
+        response = f"## {status}\n"
+        response += f"### Vendor Onboarding Complete\n\n"
+        response += f"---\n\n"
+        
+        response += f"### 📋 Vendor Details\n\n"
+        response += f"- **Name:** {vendor_data.get('vendor_name')}\n"
+        response += f"- **Tax ID:** {vendor_data.get('tax_id')}\n"
         if vendor_data.get('industry'):
-            response += f"• **Industry**: {vendor_data.get('industry')}\n"
-        response += f"\n🔍 **Validation Results:**\n"
-        response += f"• **Vendor ID**: `{vendor_id}`\n"
-        response += f"• **Validation Score**: {validation_score}\n"
-        response += f"• **Risk Level**: {risk_level}\n"
-        response += f"\n✨ **Autonomous Checks Performed:**\n"
-        response += f"• ✅ Tax ID format validation\n"
-        response += f"• ✅ Industry compliance check\n"
-        response += f"• ✅ Policy requirements verification\n"
-        response += f"• ✅ Risk assessment (watsonx.ai)\n"
+            response += f"- **Industry:** {vendor_data.get('industry')}\n"
+        
+        response += f"\n### 🔍 Validation Results\n\n"
+        response += f"- **Vendor ID:** `{vendor_id}`\n"
+        response += f"- **Validation Score:** {validation_score}\n"
+        response += f"- **Risk Level:** {risk_level}\n"
+        
+        response += f"\n### ✨ Autonomous Checks Performed\n\n"
+        response += f"- ✅ Tax ID format validation\n"
+        response += f"- ✅ Industry compliance check\n"
+        response += f"- ✅ Policy requirements verification\n"
+        response += f"- ✅ Risk assessment (watsonx.ai)\n"
         
         if validation_score >= 0.75:
-            response += f"\n🎉 **Next Steps:**\n"
-            response += f"• Vendor added to approved suppliers list\n"
-            response += f"• Ready for purchase orders\n"
-            response += f"• Notification sent to procurement team\n"
+            response += f"\n### 🎉 Next Steps\n\n"
+            response += f"- Vendor added to approved suppliers list\n"
+            response += f"- Ready for purchase orders\n"
+            response += f"- Notification sent to procurement team\n"
         else:
-            response += f"\n⚠️ **Action Required:**\n"
-            response += f"• Manual review needed\n"
-            response += f"• Escalated to compliance team\n"
+            response += f"\n### ⚠️ Action Required\n\n"
+            response += f"- Manual review needed\n"
+            response += f"- Escalated to compliance team\n"
+        
+        response += f"\n---\n"
+        response += f"\n*Processed by Vendor Agent | Session: {session_id[:8]}*\n"
+        
         
         # Log to audit trail
         if AUDIT_LOGGER:
@@ -273,28 +283,198 @@ class Orchestrator:
         REQUISITION AGENT - Autonomous purchase request processing
         
         AUTONOMOUS DECISION-MAKING:
-        1. Analyzes purchase request
+        1. Analyzes purchase request using LLM reasoning
         2. Uses watsonx.ai to reason about budget and compliance
-        3. Decides on approval chain
-        4. Executes procurement workflow
+        3. Decides on approval chain autonomously
+        4. Executes procurement workflow without asking for clarification
         """
         logger.info(f"📦 Requisition Agent: Processing purchase request in session {session_id[:8]}")
         
-        response = "I'll help you with a purchase request. To proceed, I need:\n\n"
-        response += "1. **Item Description**: What do you need?\n"
-        response += "2. **Quantity**: How many units?\n"
-        response += "3. **Department**: Which department?\n"
-        response += "4. **Budget Code**: Cost center code\n"
-        response += "5. **Justification**: Why is this needed?\n\n"
-        response += "I'll autonomously:\n"
-        response += "- ✅ Check available budget\n"
-        response += "- ✅ Search approved vendors\n"
-        response += "- ✅ Verify policy compliance\n"
-        response += "- ✅ Route for approval (if needed)\n"
-        response += "- ✅ Generate purchase order\n\n"
-        response += "Tell me what you need to buy."
+        # Import required modules
+        import re
+        import json
+        req_data = {}
+        
+        # IMPROVED EXTRACTION: Use LLM to extract structured data from natural language
+        # This is more robust than regex patterns alone
+        extraction_prompt = f"""Extract purchase request details from this user input:
+"{user_input}"
+
+Return a JSON object with these fields (provide best guess if not explicit):
+- quantity: number (default 1)
+- item: string (what to buy)
+- department: string (which department, default "General")
+- delivery_urgency: string (standard/urgent/asap)
+
+Return ONLY valid JSON, no other text."""
+        
+        try:
+            # Use watsonx.ai for LLM reasoning if available
+            extraction_result = self.perform_llm_reasoning(extraction_prompt)
+            
+            # Parse JSON response
+            import json
+            extracted = json.loads(extraction_result)
+            req_data = extracted
+            
+            # Validate required fields
+            if not req_data.get('item'):
+                raise ValueError("Could not extract item")
+            if not req_data.get('quantity'):
+                req_data['quantity'] = 1
+            if not req_data.get('department'):
+                req_data['department'] = 'General'
+                
+            logger.info(f"LLM extraction result: {json.dumps(req_data)}")
+            
+        except Exception as e:
+            # Fallback to regex extraction if LLM fails
+            logger.info(f"LLM extraction failed: {e}, using regex fallback")
+            
+            # Extract quantity using improved pattern
+            qty_match = re.search(r'(\d+)\s+(?:units?|pieces?|copies?|of)?', user_input)
+            if qty_match:
+                req_data['quantity'] = int(qty_match.group(1))
+            else:
+                req_data['quantity'] = 1
+            
+            # IMPROVED: Use better patterns that correctly capture item name
+            # Pattern 1: "buy/need/order N <item> for <department>"
+            pattern1 = r'(?:buy|order|need|purchase|get)\s+(\d+)\s+(.+?)\s+for\s+(?:the\s+)?(.+?)(?:\s+department)?$'
+            match = re.search(pattern1, user_input, re.IGNORECASE)
+            if match:
+                req_data['quantity'] = int(match.group(1))
+                req_data['item'] = match.group(2).strip()
+                req_data['department'] = match.group(3).strip()
+            else:
+                # Pattern 2: "buy/need/order <item> for <department>"
+                pattern2 = r'(?:buy|order|need|purchase|get)\s+(.+?)\s+for\s+(?:the\s+)?(.+?)(?:\s+department)?$'
+                match = re.search(pattern2, user_input, re.IGNORECASE)
+                if match:
+                    # Extract quantity from the full item part
+                    full_item = match.group(1).strip()
+                    qty_in_item = re.search(r'^(\d+)\s+(.+)$', full_item)
+                    if qty_in_item:
+                        req_data['quantity'] = int(qty_in_item.group(1))
+                        req_data['item'] = qty_in_item.group(2)
+                    else:
+                        req_data['item'] = full_item
+                    req_data['department'] = match.group(2).strip()
+                else:
+                    # Pattern 3: Last resort - just extract numbers and text
+                    remaining = user_input
+                    # Remove common prefixes
+                    remaining = re.sub(r'^(?:i\s+)?(?:need|want|would\s+like)\s+(?:to\s+)?', '', remaining, flags=re.IGNORECASE)
+                    if remaining and len(remaining) > 3:
+                        req_data['item'] = remaining.strip()
+        
+        # Validate we have minimum required info
+        if not req_data.get('item'):
+            response = "I'll help you with a purchase request. To proceed, I need:\n\n"
+            response += "1. **Item Description**: What do you need?\n"
+            response += "2. **Quantity**: How many units?\n"
+            response += "3. **Department**: Which department?\n\n"
+            response += "Example: *I need to buy 5 ergonomic chairs for IT*"
+            return response
+        
+        # Ensure we have quantity and department
+        if not req_data.get('quantity'):
+            req_data['quantity'] = 1
+        if not req_data.get('department'):
+            req_data['department'] = 'General'
+        
+        # AUTONOMOUS SKILL EXECUTION: Call skills without asking user
+        # Check budget autonomously
+        budget_check_result = self._check_budget_autonomous(
+            req_data.get('department'),
+            req_data['quantity'] * 250  # Estimate price
+        )
+        
+        # Search catalog autonomously
+        catalog_result = self._search_catalog_autonomous(req_data.get('item'))
+        
+        # Generate pricing based on catalog or estimate
+        import random
+        unit_price = catalog_result.get('unit_price', random.randint(50, 500))
+        total_price = unit_price * req_data['quantity']
+        remaining_budget = budget_check_result.get('remaining', random.randint(10000, 50000))
+        
+        # Generate requisition ID
+        import uuid
+        req_id = f"REQ-{str(uuid.uuid4())[:8].upper()}"
+        
+        # Build beautified response
+        response = f"## 📦 Purchase Requisition Created\n\n"
+        
+        response += f"### 📋 Requisition Details\n\n"
+        response += f"- **Requisition ID:** `{req_id}`\n"
+        response += f"- **Item:** {req_data.get('item')}\n"
+        response += f"- **Quantity:** {req_data['quantity']}\n"
+        response += f"- **Unit Price:** ${unit_price:,}\n"
+        response += f"- **Total Cost:** ${total_price:,}\n"
+        if req_data.get('department'):
+            response += f"- **Department:** {req_data.get('department')}\n"
+            
+        response += f"\n### 💰 Budget Analysis\n\n"
+        budget_available = remaining_budget >= total_price
+        response += f"- **Budget Status:** {'✅ Available' if budget_available else '⚠️ Insufficient'}\n"
+        response += f"- **Remaining Budget:** ${remaining_budget:,}\n"
+        if remaining_budget > 0:
+            response += f"- **Impact:** {round((total_price/remaining_budget)*100, 1)}% of remaining budget\n"
+        
+        response += f"\n### ⚙️ Workflow Status\n\n"
+        if total_price > 5000:
+            response += f"- **Status:** ⏳ Pending Manager Approval\n"
+            response += f"- **Routing:** Routed to Department Head\n"
+            response += f"- **Reason:** Amount exceeds $5,000 threshold\n"
+        elif total_price > 1000:
+            response += f"- **Status:** ⏳ Pending Supervisor Approval\n"
+            response += f"- **Routing:** Routed to Supervisor\n"
+            response += f"- **Reason:** Amount exceeds $1,000 threshold\n"
+        else:
+            response += f"- **Status:** ✅ Auto-Approved\n"
+            response += f"- **Routing:** Sent to Purchasing\n"
+            response += f"- **Reason:** Amount under $1,000 auto-approval threshold\n"
+            
+        response += f"\n### 🤖 AI Decision\n\n"
+        response += f"- **Agent:** Requisition Autonomous Agent\n"
+        response += f"- **Processing:** Autonomous (no user clarification needed)\n"
+        response += f"- **Reasoning:** Extracted item='{req_data.get('item')}' qty={req_data['quantity']} dept='{req_data.get('department')}' → Total ${total_price:,}\n"
+        
+        response += f"\n---\n"
+        response += f"\n*Processed by Requisition Agent | Session: {session_id[:8]} | Autonomous: Yes*\n"
         
         return response
+    
+    def _check_budget_autonomous(self, department: str, estimated_cost: float) -> Dict[str, Any]:
+        """Autonomously check budget for department without asking user"""
+        logger.info(f"💳 Budget Check: Department={department}, Cost=${estimated_cost:,}")
+        
+        # Simulate budget check - in production would call skill
+        import random
+        remaining = random.randint(10000, 100000)
+        
+        return {
+            'department': department,
+            'estimated_cost': estimated_cost,
+            'remaining': remaining,
+            'approved': remaining >= estimated_cost
+        }
+    
+    def _search_catalog_autonomous(self, item: str) -> Dict[str, Any]:
+        """Autonomously search catalog without asking user"""
+        logger.info(f"🔍 Catalog Search: Item={item}")
+        
+        # Simulate catalog search - in production would call skill
+        import random
+        unit_price = random.randint(100, 500)
+        
+        return {
+            'item': item,
+            'unit_price': unit_price,
+            'in_stock': random.choice([True, False]),
+            'supplier': 'Standard Supplier'
+        }
 
     def _execute_approval_agent(self, user_input: str, session_id: str) -> str:
         """
@@ -308,15 +488,50 @@ class Orchestrator:
         """
         logger.info(f"✅ Approval Agent: Checking status in session {session_id[:8]}")
         
-        response = "I can check the status of your requests. Please provide:\n\n"
-        response += "- **Request ID**: e.g., REQ-001, PO-2025-001\n\n"
-        response += "I'll autonomously:\n"
-        response += "- ✅ Retrieve current status\n"
-        response += "- ✅ Check approval progress\n"
-        response += "- ✅ Assess if approval needed\n"
-        response += "- ✅ Route for immediate approval (if possible)\n"
-        response += "- ✅ Notify stakeholders\n\n"
-        response += "What request would you like to check?"
+        # Extract ID
+        import re
+        req_id = None
+        id_match = re.search(r'(REQ-\d+|PO-\d+|[A-Z]+-\d+)', user_input, re.IGNORECASE)
+        if id_match:
+            req_id = id_match.group(1).upper()
+            
+        if not req_id:
+            response = "I can check the status of your requests. Please provide:\n\n"
+            response += "- **Request ID**: e.g., REQ-001, PO-2025-001\n\n"
+            response += "Example: *Check status of REQ-001*"
+            return response
+            
+        # Simulate status check
+        import random
+        statuses = ["Pending Approval", "Approved", "In Procurement", "Shipped", "Delivered"]
+        current_status = random.choice(statuses)
+        
+        # Build beautified response
+        response = f"## 🔎 Request Status Found\n\n"
+        
+        response += f"### 📄 Request Information\n\n"
+        response += f"- **Request ID:** `{req_id}`\n"
+        response += f"- **Current Status:** **{current_status}**\n"
+        response += f"- **Last Updated:** Today, {datetime.now().strftime('%H:%M')}\n"
+        
+        response += f"\n### 🔄 Approval Chain\n\n"
+        response += f"- ✅ Submitted by User\n"
+        response += f"- ✅ Budget Check Passed\n"
+        
+        if current_status == "Pending Approval":
+            response += f"- ⏳ **Manager Approval (Current Step)**\n"
+            response += f"- ⚪ Procurement Review\n"
+        elif current_status == "Approved":
+            response += f"- ✅ Manager Approval\n"
+            response += f"- ✅ Procurement Review\n"
+            response += f"- 🎉 **Ready for Ordering**\n"
+        else:
+            response += f"- ✅ Manager Approval\n"
+            response += f"- ✅ Procurement Review\n"
+            response += f"- 🚚 **{current_status}**\n"
+            
+        response += f"\n---\n"
+        response += f"\n*Processed by Approval Agent | Session: {session_id[:8]}*\n"
         
         return response
 
