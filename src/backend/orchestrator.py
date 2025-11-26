@@ -222,34 +222,34 @@ class Orchestrator:
         
         
         # Build beautified response with proper spacing and formatting
-        response = f"## {status}\n"
-        response += f"### Vendor Onboarding Complete\n\n"
+        response = f"**{status}**\n"
+        response += f"**Vendor Onboarding Complete**\n\n"
         response += f"---\n\n"
         
-        response += f"### 📋 Vendor Details\n\n"
-        response += f"- **Name:** {vendor_data.get('vendor_name')}\n"
-        response += f"- **Tax ID:** {vendor_data.get('tax_id')}\n"
+        response += f"**📋 Vendor Details**\n"
+        response += f"- Name: {vendor_data.get('vendor_name')}\n"
+        response += f"- Tax ID: {vendor_data.get('tax_id')}\n"
         if vendor_data.get('industry'):
-            response += f"- **Industry:** {vendor_data.get('industry')}\n"
+            response += f"- Industry: {vendor_data.get('industry')}\n"
         
-        response += f"\n### 🔍 Validation Results\n\n"
-        response += f"- **Vendor ID:** `{vendor_id}`\n"
-        response += f"- **Validation Score:** {validation_score}\n"
-        response += f"- **Risk Level:** {risk_level}\n"
+        response += f"\n**🔍 Validation Results**\n"
+        response += f"- Vendor ID: `{vendor_id}`\n"
+        response += f"- Validation Score: {validation_score}\n"
+        response += f"- Risk Level: {risk_level}\n"
         
-        response += f"\n### ✨ Autonomous Checks Performed\n\n"
+        response += f"\n**✨ Autonomous Checks Performed**\n"
         response += f"- ✅ Tax ID format validation\n"
         response += f"- ✅ Industry compliance check\n"
         response += f"- ✅ Policy requirements verification\n"
         response += f"- ✅ Risk assessment (watsonx.ai)\n"
         
         if validation_score >= 0.75:
-            response += f"\n### 🎉 Next Steps\n\n"
+            response += f"\n**🎉 Next Steps**\n"
             response += f"- Vendor added to approved suppliers list\n"
             response += f"- Ready for purchase orders\n"
             response += f"- Notification sent to procurement team\n"
         else:
-            response += f"\n### ⚠️ Action Required\n\n"
+            response += f"\n**⚠️ Action Required**\n"
             response += f"- Manual review needed\n"
             response += f"- Escalated to compliance team\n"
         
@@ -285,7 +285,7 @@ class Orchestrator:
         AUTONOMOUS DECISION-MAKING (True Agentic AI):
         1. Uses advanced regex patterns to extract requirements
         2. Performs autonomous budget and compliance checks
-        3. Routes to appropriate approval chain
+        3. Detects policy violations automatically
         4. NO CLARIFICATION QUESTIONS - fully autonomous
         """
         logger.info(f"📦 Requisition Agent: Processing purchase request in session {session_id[:8]}")
@@ -297,121 +297,168 @@ class Orchestrator:
         
         req_data = {}
         
-        # AGGRESSIVE EXTRACTION: Multiple pattern attempts to extract ALL info autonomously
-        # Pattern 1: "buy/need/order N <item> for <department>"
-        pattern1 = r'(?:buy|order|need|purchase|get|i\s+need\s+to\s+buy)\s+(\d+)\s+(.+?)\s+for\s+(?:the\s+)?(.+?)(?:\s+department)?$'
-        match = re.search(pattern1, user_input, re.IGNORECASE)
-        
-        if match:
-            req_data['quantity'] = int(match.group(1))
-            req_data['item'] = match.group(2).strip()
-            req_data['department'] = match.group(3).strip()
-            logger.info(f"✓ Pattern 1 matched: qty={req_data['quantity']}, item={req_data['item']}, dept={req_data['department']}")
-        else:
-            # Pattern 2: Without department specified
-            pattern2 = r'(?:buy|order|need|purchase|get)\s+(\d+)\s+(.+?)(?:\s+units?)?(?:\s+pieces?)?$'
-            match = re.search(pattern2, user_input, re.IGNORECASE)
-            
-            if match:
-                req_data['quantity'] = int(match.group(1))
-                item_text = match.group(2).strip()
+        # PRICE EXTRACTION FIRST - Priority for requests with explicit pricing
+        price_match = re.search(r'\$[\d,]+', user_input)
+        if price_match:
+            # High-value purchase format: "Order a $12,000 espresso machine for the office"
+            price_str = price_match.group(0).replace('$', '').replace(',', '')
+            try:
+                total_price = int(price_str)
+                req_data['has_explicit_price'] = True
                 
-                # Try to extract department if present
-                dept_match = re.search(r'(?:for|from|in)\s+(?:the\s+)?(\w+(?:\s+\w+)?)', user_input, re.IGNORECASE)
+                # Extract item from after price to "for"
+                # Pattern: "Order a $12,000 espresso machine for the office"
+                item_pattern = r'(?:order|buy|purchase|get)\s+a?\s*\$[\d,]+\s+(.+?)(?:\s+(?:for|in)\s+(?:the\s+)?|\s*$)'
+                item_match = re.search(item_pattern, user_input, re.IGNORECASE)
+                if item_match:
+                    req_data['item'] = item_match.group(1).strip()
+                    req_data['quantity'] = 1
+                else:
+                    # Fallback: everything after price until "for"
+                    parts = user_input.split('$' + price_match.group(0).replace('$', ''))
+                    if len(parts) > 1:
+                        item_text = parts[1].strip()
+                        # Remove "for department" part
+                        item_text = re.split(r'\s+(?:for|in)\s+', item_text, flags=re.IGNORECASE)[0].strip()
+                        if item_text:
+                            req_data['item'] = item_text
+                            req_data['quantity'] = 1
+                
+                # Extract department after "for"
+                dept_pattern = r'(?:for|in)\s+(?:the\s+)?(.+?)$'
+                dept_match = re.search(dept_pattern, user_input, re.IGNORECASE)
                 if dept_match:
                     req_data['department'] = dept_match.group(1).strip()
                 else:
                     req_data['department'] = 'General'
-                
-                req_data['item'] = item_text
-                logger.info(f"✓ Pattern 2 matched: qty={req_data['quantity']}, item={req_data['item']}, dept={req_data['department']}")
-            else:
-                # Pattern 3: Extract just quantity and item
-                qty_match = re.search(r'(\d+)', user_input)
-                if qty_match:
-                    req_data['quantity'] = int(qty_match.group(1))
-                    # Get everything after the number
-                    item_text = re.sub(r'^\D*\d+\s+', '', user_input).strip()
-                    # Remove "for department" part if it exists
-                    item_text = re.split(r'\s+for\s+', item_text, flags=re.IGNORECASE)[0].strip()
                     
-                    if item_text and len(item_text) > 2:
-                        req_data['item'] = item_text
-                        
-                        # Try to extract department
-                        dept_match = re.search(r'for\s+(?:the\s+)?(\w+)', user_input, re.IGNORECASE)
-                        req_data['department'] = dept_match.group(1).strip() if dept_match else 'General'
-                        logger.info(f"✓ Pattern 3 matched: qty={req_data['quantity']}, item={req_data['item']}, dept={req_data['department']}")
+                logger.info(f"Price extraction: price=${total_price:,}, item={req_data.get('item')}, dept={req_data.get('department')}")
+            except Exception as e:
+                logger.warning(f"Price extraction failed: {e}")
+                total_price = None
+        else:
+            total_price = None
         
-        # FALLBACK: If we still don't have an item, use the entire input as item description
-        if not req_data.get('item'):
-            # Try to extract quantity if present
-            qty_match = re.search(r'(\d+)', user_input)
-            if qty_match:
-                req_data['quantity'] = int(qty_match.group(1))
+        # If no explicit price, use standard quantity-based extraction
+        if not total_price:
+            # Pattern 1: "buy/need/order N <item> for <department>"
+            pattern1 = r'(?:buy|order|need|purchase|get)\s+(\d+)\s+(.+?)\s+(?:for|in)\s+(?:the\s+)?(.+?)$'
+            match = re.search(pattern1, user_input, re.IGNORECASE)
+            
+            if match:
+                req_data['quantity'] = int(match.group(1))
+                req_data['item'] = match.group(2).strip()
+                req_data['department'] = match.group(3).strip()
+                logger.info(f"Pattern 1: qty={req_data['quantity']}, item={req_data['item']}, dept={req_data['department']}")
             else:
-                req_data['quantity'] = 1
-            
-            # Use the whole input minus prefixes as item
-            item_text = re.sub(r'^(?:i\s+)?(?:need|want|would\s+like|please|can\s+you|can\s+i)\s+(?:to\s+)?(?:buy|order|purchase|get)\s+', '', user_input, flags=re.IGNORECASE).strip()
-            
-            if item_text and len(item_text) > 2:
-                req_data['item'] = item_text
-                req_data['department'] = 'General'
-                logger.info(f"✓ Fallback pattern: qty={req_data['quantity']}, item={req_data['item']}")
+                # Pattern 2: Without department specified
+                pattern2 = r'(?:buy|order|need|purchase|get)\s+(\d+)\s+(.+?)$'
+                match = re.search(pattern2, user_input, re.IGNORECASE)
+                
+                if match:
+                    req_data['quantity'] = int(match.group(1))
+                    req_data['item'] = match.group(2).strip()
+                    dept_match = re.search(r'(?:for|in)\s+(?:the\s+)?(\w+)', user_input, re.IGNORECASE)
+                    req_data['department'] = dept_match.group(1).strip() if dept_match else 'General'
+                    logger.info(f"Pattern 2: qty={req_data['quantity']}, item={req_data['item']}")
         
-        # If still no item, return error (but this should rarely happen with the above patterns)
+        # Ensure we have at least item
         if not req_data.get('item'):
-            return "Unable to process request. Please provide: item description, quantity, and department. Example: 'I need to buy 5 ergonomic chairs for IT'"
+            return "Unable to process. Please provide: item and quantity/price. Example: 'Order a $1,000 laptop for IT' or 'I need to buy 5 chairs for office'"
         
-        # Ensure defaults
         if not req_data.get('quantity'):
             req_data['quantity'] = 1
         if not req_data.get('department'):
             req_data['department'] = 'General'
         
-        # AUTONOMOUS PROCESSING - No questions asked
-        # Simulate pricing
-        unit_price = random.randint(100, 600)
-        total_price = unit_price * req_data['quantity']
+        # Calculate pricing if not explicit
+        if total_price is None:
+            unit_price = random.randint(100, 600)
+            total_price = unit_price * req_data['quantity']
+            unit_price = total_price // req_data['quantity']
+        else:
+            unit_price = total_price // req_data['quantity'] if req_data['quantity'] > 0 else total_price
+        
         remaining_budget = random.randint(10000, 100000)
+        
+        # COMPLIANCE CHECK - Check for policy violations
+        policy_violations = []
+        
+        # Policy 1: Items over $10,000 need business justification
+        if total_price > 10000:
+            policy_violations.append({
+                'rule': 'High-Value Purchase Policy',
+                'violation': f'Purchase amount ${total_price:,} exceeds $10,000 threshold',
+                'requires': 'Business justification, ROI analysis, and executive approval'
+            })
+        
+        # Policy 2: Non-essential items require special approval
+        non_essential_keywords = ['espresso', 'coffee', 'machine', 'vending', 'games', 'recreation', 'luxury', 'keurig']
+        if any(keyword.lower() in req_data['item'].lower() for keyword in non_essential_keywords):
+            if total_price > 5000:
+                policy_violations.append({
+                    'rule': 'Non-Essential Item Policy',
+                    'violation': f'{req_data["item"]} is classified as non-essential',
+                    'requires': 'Business case and senior manager approval'
+                })
+        
+        # If there are policy violations, return violation response
+        if policy_violations:
+            response = "Request Blocked - Policy Violation\n\n"
+            
+            for i, violation in enumerate(policy_violations, 1):
+                response += f"Violation {i}: {violation['rule']}\n"
+                response += f"Issue: {violation['violation']}\n"
+                response += f"Requires: {violation['requires']}\n\n"
+            
+            response += "To proceed, please provide:\n"
+            response += "- Business justification\n"
+            response += "- Expected ROI (if applicable)\n"
+            response += "- Department approval\n"
+            response += "- Executive sign-off (for items > $10,000)\n"
+            
+            response += f"\nRequest Details:\n"
+            response += f"- Item: {req_data['item']}\n"
+            response += f"- Amount: ${total_price:,}\n"
+            response += f"- Quantity: {req_data['quantity']}\n"
+            response += f"- Department: {req_data['department']}\n"
+            
+            response += f"\n---\nCompliance Check | Agent: Requisition | Session: {session_id[:8]}\n"
+            
+            return response
+        
+        # No violations - proceed with requisition creation
         req_id = f"REQ-{str(uuid.uuid4())[:8].upper()}"
         
-        # Build response - AUTONOMOUS REQUISITION CREATED
-        response = "## 📦 Purchase Requisition Created\n\n"
-        response += "### 📋 Requisition Details\n\n"
-        response += f"- **Requisition ID:** `{req_id}`\n"
-        response += f"- **Item:** {req_data['item']}\n"
-        response += f"- **Quantity:** {req_data['quantity']}\n"
-        response += f"- **Unit Price:** ${unit_price:,}\n"
-        response += f"- **Total Cost:** ${total_price:,}\n"
-        response += f"- **Department:** {req_data['department']}\n"
+        response = "Purchase Requisition Created\n\n"
+        response += "Requisition Details\n"
+        response += f"- Requisition ID: {req_id}\n"
+        response += f"- Item: {req_data['item']}\n"
+        response += f"- Quantity: {req_data['quantity']}\n"
+        response += f"- Unit Price: ${unit_price:,}\n"
+        response += f"- Total Cost: ${total_price:,}\n"
+        response += f"- Department: {req_data['department']}\n"
         
-        response += "\n### 💰 Budget Analysis\n\n"
+        response += "\nBudget Analysis\n"
         budget_ok = remaining_budget >= total_price
-        response += f"- **Budget Status:** {'✅ Available' if budget_ok else '⚠️ Insufficient'}\n"
-        response += f"- **Remaining Budget:** ${remaining_budget:,}\n"
+        response += f"- Budget Status: {'Available' if budget_ok else 'Insufficient'}\n"
+        response += f"- Remaining Budget: ${remaining_budget:,}\n"
         if remaining_budget > 0:
             impact = round((total_price / remaining_budget) * 100, 1)
-            response += f"- **Budget Impact:** {impact}%\n"
+            response += f"- Budget Impact: {impact}%\n"
         
-        response += "\n### ⚙️ Workflow Status\n\n"
+        response += "\nWorkflow Status\n"
         if total_price > 5000:
-            response += "- **Status:** ⏳ Pending Manager Approval\n"
-            response += "- **Routing:** Department Manager\n"
+            response += "- Status: Pending Manager Approval\n"
+            response += "- Routing: Department Manager\n"
         elif total_price > 1000:
-            response += "- **Status:** ⏳ Pending Supervisor Approval\n"
-            response += "- **Routing:** Supervisor\n"
+            response += "- Status: Pending Supervisor Approval\n"
+            response += "- Routing: Supervisor\n"
         else:
-            response += "- **Status:** ✅ Auto-Approved\n"
-            response += "- **Routing:** Purchasing\n"
+            response += "- Status: Auto-Approved\n"
+            response += "- Routing: Purchasing\n"
         
-        response += "\n### 🤖 Autonomous Processing\n\n"
-        response += f"- **Extracted:** item='{req_data['item']}' qty={req_data['quantity']} dept='{req_data['department']}'\n"
-        response += f"- **Mode:** Fully Autonomous (No Clarification Required)\n"
-        response += f"- **Decision:** Auto-Generated Requisition\n"
-        
-        response += f"\n---\n*Agent: Requisition | Session: {session_id[:8]}*\n"
+        response += f"\n---\nAgent: Requisition | Session: {session_id[:8]}\n"
         
         return response
 
@@ -446,14 +493,14 @@ class Orchestrator:
         current_status = random.choice(statuses)
         
         # Build beautified response
-        response = f"## 🔎 Request Status Found\n\n"
+        response = f"**🔎 Request Status Found**\n\n"
         
-        response += f"### 📄 Request Information\n\n"
-        response += f"- **Request ID:** `{req_id}`\n"
-        response += f"- **Current Status:** **{current_status}**\n"
-        response += f"- **Last Updated:** Today, {datetime.now().strftime('%H:%M')}\n"
+        response += f"**📄 Request Information**\n"
+        response += f"- Request ID: `{req_id}`\n"
+        response += f"- Current Status: **{current_status}**\n"
+        response += f"- Last Updated: Today, {datetime.now().strftime('%H:%M')}\n"
         
-        response += f"\n### 🔄 Approval Chain\n\n"
+        response += f"\n**🔄 Approval Chain**\n"
         response += f"- ✅ Submitted by User\n"
         response += f"- ✅ Budget Check Passed\n"
         
